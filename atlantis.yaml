@@ -1,0 +1,20 @@
+version: 3
+automerge: true
+abort_on_execution_order_fail: true
+autodiscover:
+  mode: auto
+projects:
+- name: atlantis-dev
+  branch: /main/
+  dir: ./terraform
+  workspace: dev
+  terraform_version: v1.6.1
+  autoplan:
+    enabled: false
+- name: atlantis-prod
+  branch: /main/
+  dir: ./terraform
+  workspace: prod
+  terraform_version: v1.6.1
+  autoplan:
+    enabled: false
