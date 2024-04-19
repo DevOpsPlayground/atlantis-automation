@@ -1,25 +1,55 @@
 # Atlantis Lab Time
-In this Lab we are going to use Terraform to deploy a EC2 instance with Atlantis' Dockerfile already created for us.
-We will be connecting into the EC2 instance and install Atlantis via the Docker Image way and get hands on with webhooking Atlantis to our GitLab repository,
-follow by creating a pull request to see Atlantis in action.
+In this lab, we'll use Terraform to deploy an EC2 instance preconfigured with Atlantis' Dockerfile. We'll then connect to the EC2 instance, install Atlantis using the Docker image method, and set up webhook integration with our GitLab repository. Finally, we'll create a pull request to observe Atlantis in action.
 
 Follow the step-by-step below to complete this Lab, hope you enjoy and learn something new from this!
 
 ## Set up Gitlab
-In this section we will be going through Gitlab to create a repo, access token and webhook configuration as a pre-requesit for Atlantis. Token will be used for Atlantis to access the repo and webhook secrets will define what event Atlantis will be listening out for.
+In this section we will be going through Gitlab setup and to create a repo, access token and webhook configuration as a pre-requesites for Atlantis. These steps are essential prerequisites for integrating Atlantis. The access token will allow Atlantis to access the repository, while the webhook configuration will define the events that Atlantis will monitor.
 
-Log into your GitLab instance with provided login details
+To setup Gitlab in EC2 instance then execute the below commands
+```
+curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash 
+```
+Gitlab installation complete
+![Gitlab installation page](/image/11_Gitlab.png)
 
-1. Create a new repo within Gitlab
+Install GitLab EE (Enterprise Edition) on a Linux system using the YUM package manager.
+Copy hostname from respective ec2 instance.
+```
+sudo EXTERNAL_URL="http://hostname/" yum install -y gitlab-ee
+```
+
+The belwo command  is used to display the initial root password set during the installation of GitLab.This password is essential for logging in to the GitLab web interface for the first time after installation. Make sure to securely store and manage this password to maintain the security of your GitLab instance and it is valid only 24 hours so once you can login you can change your password.
+
+```
+sudo cat /etc/gitlab/initial_root_password
+```
+Example see below screenshot for better understanding.
+
+![To generate password for first time Gitlab login](/image/12_gitlab.png)
+
+Once Gitlab installation successful you can see example url like below.   
+
+Example : GitLab should be available at http://35.176.82.46/ (don't use this URL)
+
+Log into your GitLab instance with provided login details.
+Use username as root and password should obtain as shown above command from CLI
+
+Login Page of Gitlab
+![Login page of gitlab](/image/13_gitlab.png)
+
+Create a new repo within Gitlab
 ![Gitlab login page](/image/1_gitlab.png)
 
-2. Fill out the name of the repo
+Fill out the name of the repo as per your requirement
 ![Create a new repo](/image/2_gitlab.png)
 
-3. First we need to create an access token for Atlantis to use
+ First we need to create an access token for Atlantis to use
 ![Create new access token](/image/3_gitlab.png)
 
-4. Give the name of Token atlantis so team members know what the token is used for. Give it Developer Role and select api to give it permissions. Once the Token is created, make note of it and save it for later. Set the environment variable with below command e.g. export ACCESS_TOKEN=glpat-abc123def456
+Name the token "atlantis" to clearly indicate its purpose to team members understand. Assign it the Developer role and select the "api" to grant the required permissions. Once created, ensure to make a note of the token and save it for future reference. Set the environment variable using the command provided below:
+
+e.g. export ACCESS_TOKEN=glpat-abc123def456
 ```
 export ACCESS_TOKEN=YOUR_TOKEN
 
@@ -29,8 +59,8 @@ To check if you have assigned the value correctly, run 'echo $ACCESS_TOKEN'. Thi
 ![Settings for access token](/image/4_gitlab.png)
 ![Take note of token secret](/image/4_1_gitlab.png)
 
-5. Create a webhook with EC2 IP. Just like with access token, set the environment variable for webhook secret too.
-The secret will be defined by you.
+Create a webhook with EC2 IP. Just like with access token, set the environment variable for webhook secret too.
+The secret will be defined by your own.
 ```
 export WEBHOOK_SECRET=YOUR_WEBHOOK_SECRET
 ```
@@ -46,7 +76,7 @@ export WEBHOOK_SECRET=YOUR_WEBHOOK_SECRET
 ![Gitlab Webhook config part 1](/image/5_1_gitlab.png)
 ![Gitlab Webhook config part 2](/image/5_2_gitlab.png)
 
-6. Set repo URL and hostname environment variables. 
+Set repo URL and hostname environment variables. 
 Make sure Repo URL DOES NOT contain http.
 Make sure hostname DOES contain http.
 
@@ -63,7 +93,7 @@ e.g. export HOSTNAME=http://18.134.152.108
 ```
 ![Gitlab repo home](/image/6_gitlab.png)
 
-Reaching here means you have fully set up Alantis to accept connections and events from Gitlab. Next section we will be launching Atlantis with the environment variables we defined earlier. 
+Reaching this point indicates that you have successfully configured Atlantis to accept connections and events from Gitlab. Next section we will be launching Atlantis with the environment variables we defined earlier. 
 
 
 ## Atlantis Install and Set Up
@@ -83,7 +113,7 @@ sudo docker run -itd -p 4000:4141 --name atlantis atlantis server --automerge --
 Once Atlantis service is started, you can access it by going to your EC2 IP on port 4000
 ![Atlantis homepage](/image/3_atlantis.png)
 
-Next we need to provide Atlantis the access to AWS by providing the AWS User Access key and Secret Access Key. A IAM user is provided with minimum required permissions for Atlantis to work here.
+Next we need to provide Atlantis  access to AWS by providing the AWS User Access key and Secret Access Key.  IAM user is provided with minimum required permissions for Atlantis to work here.
 
 We first exec into the atlantis
 ```
