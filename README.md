@@ -3,10 +3,10 @@ In this lab, we'll use Terraform to deploy an EC2 instance preconfigured with At
 
 Follow the step-by-step below to complete this Lab, hope you enjoy and learn something new from this!
 
-## Set up Gitlab
+## 1. Set up Gitlab
 In this section we will be going through Gitlab setup and to create a repo, access token and webhook configuration as a pre-requesites for Atlantis. These steps are essential prerequisites for integrating Atlantis. The access token will allow Atlantis to access the repository, while the webhook configuration will define the events that Atlantis will monitor.
 
-To setup Gitlab in EC2 instance then execute the below commands
+To setup Gitlab in EC2 instance we have multiple options and we followed two different methods like one is manual method using the below commands
 ```
 curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash 
 ```
@@ -28,12 +28,22 @@ Example see below screenshot for better understanding.
 
 ![To generate password for first time Gitlab login](/image/12_gitlab.png)
 
-Once Gitlab installation successful you can see example url like below.   
+The other method Gitlab installed using Docker engine you can follow the below official guide.
+https://docs.gitlab.com/ee/install/docker.html#install-gitlab-using-docker-engine
 
-Example : GitLab should be available at http://35.176.82.46/ (don't use this URL)
+To Set up and configure this process it will take more time,so we have pre configured and provisioned EC2 instnce and Gitlab setup here.
+So to login Gitlab using the links which you get at the time of Lab time.
+  
+
+Example
+
+GITLAB: http://funny-panda.devopsplayground.org
+TERMINAL: http://funny-panda.devopsplayground.org:3000/wetty
+VSCODE: http://funny-panda.devopsplayground.org:8000/
+Atlantis: http://18.130.168.206/wetty
 
 Log into your GitLab instance with provided login details.
-Use username as root and password should obtain as shown above command from CLI
+You will find user and password details in VSCODE link under the file called gitlab_cred.txt.
 
 Login Page of Gitlab
 ![Login page of gitlab](/image/13_gitlab.png)
@@ -59,7 +69,13 @@ To check if you have assigned the value correctly, run 'echo $ACCESS_TOKEN'. Thi
 ![Settings for access token](/image/4_gitlab.png)
 ![Take note of token secret](/image/4_1_gitlab.png)
 
-Create a webhook with EC2 IP. Just like with access token, set the environment variable for webhook secret too.
+Before you create a webhook with EC2 IP you have to enable Network outbound requests .
+![Network Outbound Requests](/image/Network_outbound_requests.png)
+![Network outbound requests](/image/Network_outbound.png)
+
+Click save changes and go to normal settings Webhook option.
+
+and then follow the same like with access token, set the environment variable for webhook secret too.
 The secret will be defined by your own.
 ```
 export WEBHOOK_SECRET=YOUR_WEBHOOK_SECRET
@@ -75,6 +91,7 @@ export WEBHOOK_SECRET=YOUR_WEBHOOK_SECRET
 ![Gitlab Webhook settings](/image/5_gitlab.png)
 ![Gitlab Webhook config part 1](/image/5_1_gitlab.png)
 ![Gitlab Webhook config part 2](/image/5_2_gitlab.png)
+![Webhook playload event logs](/image/Webhook_logs.png)
 
 Set repo URL and hostname environment variables. 
 Make sure Repo URL DOES NOT contain http.
