@@ -191,7 +191,7 @@ You can get sample terraform infra files availble under test-atlantis folder.
 
 From atlantis homepage, you can see all the previous plans/apply with an screenshot attached showing the native terraform output
 
-![Atlantis homepage shows output](/image/workspace_lock_1.png)
+![Atlantis homepage shows output](/image/atlantis_Workspace_web_plan_apply.png)
 
 Once the plan is done and without error, the output will be commented within the pull request/merge request
 
