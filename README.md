@@ -1,45 +1,26 @@
 # Atlantis Lab Time
-In this lab, we'll use Terraform to deploy an EC2 instance preconfigured with Atlantis' Dockerfile. We'll then connect to the EC2 instance, install Atlantis using the Docker image method, and set up webhook integration with our GitLab repository. Finally, we'll create a pull request to observe Atlantis in action.
+In this lab, we'll use Terraform to deploy an EC2 instance preconfigured with Atlantis' Dockerfile. We'll then connect to the EC2 instance, install Atlantis using the Docker image method, and set up webhook integration with our GitLab repository.The access token will allow Atlantis to access the repository, while the webhook configuration will define the events that Atlantis will monitor. Finally, we'll create a pull request to observe Atlantis in action.
 
 Follow the step-by-step below to complete this Lab, hope you enjoy and learn something new from this!
 
-## 1. Set up Gitlab
-In this section we will be going through Gitlab setup and to create a repo, access token and webhook configuration as a pre-requesites for Atlantis. These steps are essential prerequisites for integrating Atlantis. The access token will allow Atlantis to access the repository, while the webhook configuration will define the events that Atlantis will monitor.
+We have pre configured and provisioned EC2 instnce and Gitlab setup already to save time in playground session.
+So no need to perform Gitlab setup and based one playground links you can directly connect Gitlab and follow the Token integration and Webhook integration.
 
-To setup Gitlab in EC2 instance we have multiple options and we followed two different methods like one is manual method using the below commands
-```
-curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash 
-```
-Gitlab installation complete
-![Gitlab installation page](/image/11_Gitlab.png)
 
-Install GitLab EE (Enterprise Edition) on a Linux system using the YUM package manager.
-Copy hostname from respective ec2 instance.
-```
-sudo EXTERNAL_URL="http://hostname/" yum install -y gitlab-ee
-```
+Devops Playground Lab Time:
 
-The belwo command  is used to display the initial root password set during the installation of GitLab.This password is essential for logging in to the GitLab web interface for the first time after installation. Make sure to securely store and manage this password to maintain the security of your GitLab instance and it is valid only 24 hours so once you can login you can change your password.
+Once you start click the below link giving your correct details it will display all your access links like below.
 
-```
-sudo cat /etc/gitlab/initial_root_password
-```
-Example see below screenshot for better understanding.
-
-![To generate password for first time Gitlab login](/image/12_gitlab.png)
-
-The other method Gitlab installed using Docker engine you can follow the below official guide.
-https://docs.gitlab.com/ee/install/docker.html#install-gitlab-using-docker-engine
-
-To Set up and configure this process it will take more time,so we have pre configured and provisioned EC2 instnce and Gitlab setup here.
-So to login Gitlab using the links which you get at the time of Lab time.
-  
+Lab environment: https://lab.devopsplayground.org/
 
 Example
 
 GITLAB: http://funny-panda.devopsplayground.org
+
 TERMINAL: http://funny-panda.devopsplayground.org:3000/wetty
+
 VSCODE: http://funny-panda.devopsplayground.org:8000/
+
 Atlantis: http://18.130.168.206/wetty
 
 Log into your GitLab instance with provided login details.

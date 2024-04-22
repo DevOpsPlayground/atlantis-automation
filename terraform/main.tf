@@ -1,10 +1,10 @@
 terraform {
   backend "s3" {
-    bucket            = "terraform-state-files-playground"
+    bucket            = "Atlantis-terraform-state-files-playground"
     key               = "atlantis-ec2.tfstate"
     region            = "eu-west-2"
     encrypt           = true
-    dynamodb_table    = "terraform_state_vlin"
+    dynamodb_table    = "terraform_state_atlantis"
   }
 }
 
