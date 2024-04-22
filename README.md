@@ -191,7 +191,5 @@ Atlantis will automatically destroy the workspace associated with a pull request
 
 Make sure that workspaces are properly cleaned up after the completion of pull requests, helping to maintain a clean and manageable infrastructure environment.
 
-
-              Thank you 
-
-              ![Thank you](/image/Thankyou.png)
+Thank you 
+![Thank you](/image/Thankyou.png)
