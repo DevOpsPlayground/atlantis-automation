@@ -233,6 +233,7 @@ atlantis plan -w dev
 
 ![Atlantis workspace output on Gitlab PR](/image/Atlantis_dev_prod_workspace.png)
 
+
 ![Atlantis webpage output](/image/atlantis_webpage.png)
 
 Finally to destroy workspaces you can enable  workspace_auto_destroy future using in Terraform.
