@@ -1,27 +1,39 @@
 terraform {
   required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 4.16"
+    fakewebservices = {
+      source = "fakewebservices"
+      version = "~> 0.1"
     }
   }
-
-  required_version = ">= 1.2.0"
 }
 
-provider "aws" {
-  region  = "eu-west-2"
+provider "fakewebservices" {
+  token = var.provider_token
 }
 
-variable "create_instance" {
-  default = false  # Set to false to destroy the instance after creation
+variable "provider_token" {
+  description = "Token for accessing the fakewebservices provider"
 }
 
-resource "aws_instance" "Atlantis_Testserver" {
-  ami           = "ami-0b2e759b077980407"
-  instance_type = "t2.micro"
+resource "fakewebservices_vpc" "primary_vpc" {
+  name       = "Primary VPC"
+  cidr_block = "0.0.0.0/1"
+}
 
-  tags = {
-    Name = "AtlantisServerInstance"
-  }
+resource "fakewebservices_server" "servers" {
+  count = 2
+
+  name = "Server ${count.index+1}"
+  type = "t2.micro"
+  vpc  = fakewebservices_vpc.primary_vpc.name
+}
+
+resource "fakewebservices_load_balancer" "primary_lb" {
+  name    = "Primary Load Balancer"
+  servers = fakewebservices_server.servers[*].name
+}
+
+resource "fakewebservices_database" "prod_db" {
+  name = "Production DB"
+  size = 256
 }

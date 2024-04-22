@@ -3,7 +3,7 @@ In this lab, we'll use Terraform to deploy an EC2 instance preconfigured with At
 
 Follow the step-by-step below to complete this Lab, hope you enjoy and learn something new from this!
 
-# 2. Atlantis Lab Time
+# 2. Git Lab Time
 
 We have pre configured and provisioned EC2 instnce and Gitlab setup already to save time in playground session.
 So no need to perform Gitlab setup and based on playground links you can directly connect Gitlab and follow the Token integration and Webhook integration.
@@ -19,6 +19,7 @@ Lab environment: https://lab.devopsplayground.org/
 You will find user and password details in VSCODE link under the file called gitlab_cred.txt.
 
 Login Page of Gitlab
+
 ![Login page of gitlab](/image/13_gitlab.png)
 
 2.1.2 Create a new repo within Gitlab
@@ -65,6 +66,8 @@ and then follow the stpes how you have configured  access token like same way.
         - Comments
         - Merge Request Events
     - Keep SSL enabled
+```
+
 ![Gitlab Webhook settings](/image/5_gitlab.png)
 ![Gitlab Webhook config part 1](/image/5_1_gitlab.png)
 ![Gitlab Webhook config part 2](/image/5_2_gitlab.png)
@@ -74,7 +77,7 @@ and then follow the stpes how you have configured  access token like same way.
 
 At the same time  make sure hostname should contain http.
 
-```
+
 
 Note: All setting up the environmenet variable steps should be performed in Atlantis Server.
 
@@ -116,7 +119,8 @@ Reaching this point indicates that you have successfully configured Atlantis to 
 In this section, we will be installing Atlantis from within the CLI using Docker. There should be a Dockerfile created already which will install the latest version of Atlantis.
 Commands below will build a image named atlantis with the Dockerfile supplied and run the atlantis service on port 4000:4141. The environment we been assigning is used here to configure atlantis on where to connect and give atlantis the access to our repo.
 
-3.1 To execute docker file swith to working directory -/home/playground/workdir
+3.1 To execute docker file swith to working directory -/home/playground/workdir .
+
 Then build a atlantis docker image using the below command.
 
 ```
@@ -187,7 +191,7 @@ You can get sample terraform infra files availble under test-atlantis folder.
 
 From atlantis homepage, you can see all the previous plans/apply with an screenshot attached showing the native terraform output
 
-![Atlantis homepage shows output](/image/8_atlantis.png)
+![Atlantis homepage shows output](/image/workspace_lock_1.png)
 
 Once the plan is done and without error, the output will be commented within the pull request/merge request
 
@@ -233,6 +237,7 @@ atlantis plan -w dev
 
 ![Atlantis workspace output on Gitlab PR](/image/Atlantis_dev_prod_workspace.png)
 
+![Atlantis lock on different workspaces](/image/atlantis_workspace_lock_dev_prod.png)
 
 ![Atlantis webpage output](/image/atlantis_webpage.png)
 
