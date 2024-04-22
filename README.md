@@ -184,3 +184,14 @@ To tell Atlantis which workspace you want to use, you can use the -w flag during
 atlantis plan -w dev
 ```
 ![Atlantis plan with 2 different workspace](/image/10_atlantis.png)
+
+
+Finally to destroy workspaces you can enable  workspace_auto_destroy future using in Terraform.
+Atlantis will automatically destroy the workspace associated with a pull request after it is closed or merged into the main branch. 
+
+Make sure that workspaces are properly cleaned up after the completion of pull requests, helping to maintain a clean and manageable infrastructure environment.
+
+
+              Thank you 
+
+              ![Thank you](/image/Thankyou.png)
