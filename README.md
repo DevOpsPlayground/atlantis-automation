@@ -1,67 +1,63 @@
-# Atlantis Lab Time
+# 1. Atlantis Lab Time
 In this lab, we'll use Terraform to deploy an EC2 instance preconfigured with Atlantis' Dockerfile. We'll then connect to the EC2 instance, install Atlantis using the Docker image method, and set up webhook integration with our GitLab repository.The access token will allow Atlantis to access the repository, while the webhook configuration will define the events that Atlantis will monitor. Finally, we'll create a pull request to observe Atlantis in action.
 
 Follow the step-by-step below to complete this Lab, hope you enjoy and learn something new from this!
 
+# 2. Atlantis Lab Time
+
 We have pre configured and provisioned EC2 instnce and Gitlab setup already to save time in playground session.
-So no need to perform Gitlab setup and based one playground links you can directly connect Gitlab and follow the Token integration and Webhook integration.
+So no need to perform Gitlab setup and based on playground links you can directly connect Gitlab and follow the Token integration and Webhook integration.
 
 
-Devops Playground Lab Time:
 
-Once you start click the below link giving your correct details it will display all your access links like below.
+2.1 Once you start click the below link giving your correct details it will display all your access links .
 
 Lab environment: https://lab.devopsplayground.org/
 
-Example
 
-GITLAB: http://funny-panda.devopsplayground.org
-
-TERMINAL: http://funny-panda.devopsplayground.org:3000/wetty
-
-VSCODE: http://funny-panda.devopsplayground.org:8000/
-
-Atlantis: http://18.130.168.206/wetty
-
-Log into your GitLab instance with provided login details.
+2.1.1 Log into your GitLab instance with provided login details.
 You will find user and password details in VSCODE link under the file called gitlab_cred.txt.
 
 Login Page of Gitlab
 ![Login page of gitlab](/image/13_gitlab.png)
 
-Create a new repo within Gitlab
+2.1.2 Create a new repo within Gitlab
+
 ![Gitlab login page](/image/1_gitlab.png)
 
-Fill out the name of the repo as per your requirement
+2.1.3 Fill out the name of the repo as per your requirement
+
 ![Create a new repo](/image/2_gitlab.png)
 
- First we need to create an access token for Atlantis to use
+2.1.4 First we need to create an access token for Atlantis to use
+
 ![Create new access token](/image/3_gitlab.png)
 
-Name the token "atlantis" to clearly indicate its purpose to team members understand. Assign it the Developer role and select the "api" to grant the required permissions. Once created, ensure to make a note of the token and save it for future reference. Set the environment variable using the command provided below:
-
-e.g. export ACCESS_TOKEN=glpat-abc123def456
-```
-export ACCESS_TOKEN=YOUR_TOKEN
-
-```
-To check if you have assigned the value correctly, run 'echo $ACCESS_TOKEN'. This should return the token you just generated
+2.1.5 Name the token "atlantis" to clearly indicate its purpose to team members understand. Assign it the Developer role and select the "api" to grant the required permissions.
 
 ![Settings for access token](/image/4_gitlab.png)
+
+
+2.1.6 Once created, ensure to make a note of the token and save it for future reference to setup variables.
+
 ![Take note of token secret](/image/4_1_gitlab.png)
 
-Before you create a webhook with EC2 IP you have to enable Network outbound requests .
+
+
+2.2.1 Next we have to create and configure Webhook
+
+2.2.2 Before you create a webhook with EC2 IP you have to enable Network outbound requests .
+
 ![Network Outbound Requests](/image/Network_outbound_requests.png)
 ![Network outbound requests](/image/Network_outbound.png)
 
-Click save changes and go to normal settings Webhook option.
+2.2.3 Click save changes and go to project  settings Webhook option.
 
-and then follow the same like with access token, set the environment variable for webhook secret too.
-The secret will be defined by your own.
+and then follow the stpes how you have configured  access token like same way.
+
+
 ```
-export WEBHOOK_SECRET=YOUR_WEBHOOK_SECRET
-```
-    - URL: http://ec2-public-ip:4000/events 
+    - URL: http://ec2-atlantis-server-public-ip:4000/events 
     - Name: alantis-webhook (It is optional and can be anything you want)
     - Secret Token: atlantis123 (This token will be used for the Docker run command later, so should make a note of it)
     - Trigger:
@@ -74,87 +70,136 @@ export WEBHOOK_SECRET=YOUR_WEBHOOK_SECRET
 ![Gitlab Webhook config part 2](/image/5_2_gitlab.png)
 ![Webhook playload event logs](/image/Webhook_logs.png)
 
-Set repo URL and hostname environment variables. 
-Make sure Repo URL DOES NOT contain http.
-Make sure hostname DOES contain http.
+2.2.4 Set repo URL and hostname environment variables and make sure that REPO URL DOES NOT contain http.
+
+At the same time  make sure hostname should contain http.
 
 ```
+
+Note: All setting up the environmenet variable steps should be performed in Atlantis Server.
+
+2.2.5 Set the environment variable using the below provided commands:
+
+```
+export ACCESS_TOKEN=YOUR_TOKEN
+
+```
+
+e.g. export ACCESS_TOKEN=glpat-abc123def456
+
+2.2.6 To check if you have assigned the value correctly, run 'echo $ACCESS_TOKEN'. This should return the token you just generated.
+
+2.2.7 Now set the environment variable for webhook secret as well.
+The secret will be defined by your own and make a note to export .
+
+```
+export WEBHOOK_SECRET=YOUR_WEBHOOK_SECRET
+
 Repo URL:
 export REPO_URL=YOUR_REPO_URL 
 
-e.g. export REPO_URL=18.134.152.108/root/atlantis-test
+e.g. export REPO_URL=funny-panda.devopsplayground.org/root/atlantis-demo
 
 Hostname:
 export HOSTNAME=YOUR_HOSTNAME
 
-e.g. export HOSTNAME=http://18.134.152.108
+e.g. export HOSTNAME=http://funny-panda.devopsplayground.org
 ```
+
 ![Gitlab repo home](/image/6_gitlab.png)
 
 Reaching this point indicates that you have successfully configured Atlantis to accept connections and events from Gitlab. Next section we will be launching Atlantis with the environment variables we defined earlier. 
 
 
-## Atlantis Install and Set Up
+## 3.Atlantis Install and Set Up
+
 In this section, we will be installing Atlantis from within the CLI using Docker. There should be a Dockerfile created already which will install the latest version of Atlantis.
 Commands below will build a image named atlantis with the Dockerfile supplied and run the atlantis service on port 4000:4141. The environment we been assigning is used here to configure atlantis on where to connect and give atlantis the access to our repo.
 
+3.1 To execute docker file swith to working directory -/home/playground/workdir
+Then build a atlantis docker image using the below command.
+
 ```
 sudo docker build -t atlantis .
+```
+![Atlantis docker image build](/image/1_atlantis.png)
 
+```
 sudo docker run -itd -p 4000:4141 --name atlantis atlantis server --automerge --autoplan-modules --gitlab-user=root --gitlab-token=$ACCESS_TOKEN --repo-allowlist=$REPO_URL --gitlab-webhook-secret=$WEBHOOK_SECRET --gitlab-hostname=$HOSTNAME
 ```
 
-![Atlantis docker image build](/image/1_atlantis.png)
 ![Running Atlantis with built image above](/image/2_atlantis.png)
 
 
-Once Atlantis service is started, you can access it by going to your EC2 IP on port 4000
+3.1.2 Once Atlantis service is started, you can access it by going to your EC2 IP on port 4000
+
 ![Atlantis homepage](/image/3_atlantis.png)
 
 Next we need to provide Atlantis  access to AWS by providing the AWS User Access key and Secret Access Key.  IAM user is provided with minimum required permissions for Atlantis to work here.
 
-We first exec into the atlantis
+3.1.3 To get AWS accesskey and secret key values grep it with the below command in Atlantis server
+
+```
+env |grep AWS
+```
+
+3.1.4 The below exec command allows you to run commands within an already deployed container which is atlantis container.
+
 ```
 sudo docker exec -it atlantis /bin/sh
 ```
 
-Then with the Vim editor we update the credentials within .aws folder
+3.1.5 Then with the Vim editor we update the credentials within .aws folder
+
 ```
 vi /home/atlantis/.aws/credentials
 ```
 
-Press I within the Vim editor to go into input mode and paste in the block below:
+3.1.6 Press I within the Vim editor to go into input mode and paste in the block below:
+
 ```
 [default]
 aws_access_key_id = "ACCESS_KEY"
 aws_secret_access_key = "SECRET_ACCESS_KEY"
 ```
 
-Once that is done, we press ESC to exit the input mode and press :wq to save the changes (w for write and q for quit)
+3.1.7 Once that is done, we press ESC to exit the input mode and press :wq to save the changes (w for write and q for quit)
 
 ![Adding AWS Creds for Atlantis](/image/4_atlantis.png)
 
-## Testing Atlantis
+## 4.Testing Atlantis
 
-Everything should be fully set up and ready to output your terraform plan onto pull request for everyone who has access to your repo to see. Lets try and upload a testing Terraform infrastructure and have Atlantis output our plan.
+Everything should be fully set up and ready to output your terraform plan onto pull request for everyone who has access to your repo to see. 
+4.1 First create a testing branch and try to upload a testing Terraform infrastructure and have Atlantis output  plan.
+You can get sample terraform infra files availble under test-atlantis folder.
 
-![Creating a new repo within Gitlab](/image/5_atlantis.png)
+![Creating a new repo within Gitlab](/image/atlantis_testing_branch.png)
+
+![Upload test files into testing_branch](/image/upload_files_testing_branch.png)
+
+4.1.a Once files uploaded then you can create merge request 
 
 ![Create merge request to testing atlantis](/image/6_atlantis.png)
 
-To run Terraform plan, we need to submit atlantis plan in the comment. We know it is working by the Eyes emote reacted on our atlantis plan comment. You can change the emote which is used by atlantis within configuration file.
+4.1.2 To run Terraform plan, we need to submit atlantis plan in the comment. We know it is working by the Eyes emote reacted on our atlantis plan comment. You can change the emote which is used by atlantis within configuration file.
+
 ![Shows atlantis plan working within pull request](/image/7_atlantis.png)
 
 From atlantis homepage, you can see all the previous plans/apply with an screenshot attached showing the native terraform output
+
 ![Atlantis homepage shows output](/image/8_atlantis.png)
 
 Once the plan is done and without error, the output will be commented within the pull request/merge request
-![Output of Atlantis plan](/image/9_atlantis.png)
 
-## Working with multiple terraform workspaces
+![Output of Atlantis plan](/image/atlantis_output2.png)
+
+## 5. Working with multiple terraform workspaces
+
 Atlantis doesn't just support linear workspaces but you can configure within the atlantis.yaml file to accept multiple workspaces
 
-Within the atlantis.yaml file will look something like this:
+Within the atlantis.yaml file will look something like this. 
+You can get this atlantis.yaml file from  our atlantis-automation Github repository.
+
 ```
 version: 3
 automerge: true
@@ -178,18 +223,23 @@ projects:
     enabled: false
 ```
 
-The config above defines 2 projects, atlantis-dev and atlantis-prod. This simulates the Dev environment and Prod environment.
+The above config defines 2 projects, atlantis-dev and atlantis-prod. This simulates the Dev environment and Prod environment.
 To tell Atlantis which workspace you want to use, you can use the -w flag during the atlantis plan or if you have defined a project within the atlantis.yaml, you can use the -p flag instead and it will pick up the configuration defined within the yaml file.
+
 ```
 atlantis plan -w dev
 ```
 ![Atlantis plan with 2 different workspace](/image/10_atlantis.png)
 
+![Atlantis workspace output on Gitlab PR](/image/Atlantis_dev_prod_workspace.png)
+
+![Atlantis webpage output](/image/atlantis_webpage.png)
 
 Finally to destroy workspaces you can enable  workspace_auto_destroy future using in Terraform.
 Atlantis will automatically destroy the workspace associated with a pull request after it is closed or merged into the main branch. 
 
 Make sure that workspaces are properly cleaned up after the completion of pull requests, helping to maintain a clean and manageable infrastructure environment.
 
-Thank you 
+Thank you
+ 
 ![Thank you](/image/Thankyou.png)
