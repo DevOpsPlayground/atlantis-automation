@@ -180,6 +180,8 @@ aws_secret_access_key = "SECRET_ACCESS_KEY"
 ## 4.Testing Atlantis
 
 Everything should be fully set up and ready to output your terraform plan onto pull request for everyone who has access to your repo to see. 
+
+
 4.1 First create a testing branch and try to upload a testing Terraform infrastructure and have Atlantis output  plan.
 You can get sample terraform infra files availble under test-atlantis folder.
 
