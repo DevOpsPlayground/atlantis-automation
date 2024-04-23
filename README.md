@@ -10,13 +10,15 @@ So no need to perform Gitlab setup and based on playground links you can directl
 
 
 
-2.1 Once you start click the below link giving your correct details it will display all your access links .
+2.1 Once you start click the below link giving your correct user name details it will display all your access links .
 
 Lab environment: https://lab.devopsplayground.org/
 
 
 2.1.1 Log into your GitLab instance with provided login details.
 You will find user and password details in VSCODE link under the file called gitlab_cred.txt.
+
+![Gitlab Credentials](/image/gitlab_cred.png)
 
 Login Page of Gitlab
 
@@ -71,6 +73,9 @@ and then follow the stpes how you have configured  access token like same way.
 ![Gitlab Webhook settings](/image/5_gitlab.png)
 ![Gitlab Webhook config part 1](/image/5_1_gitlab.png)
 ![Gitlab Webhook config part 2](/image/5_2_gitlab.png)
+
+You can see webhook logs here.
+
 ![Webhook playload event logs](/image/Webhook_logs.png)
 
 2.2.4 Set repo URL and hostname environment variables and make sure that REPO URL DOES NOT contain http.
@@ -101,12 +106,12 @@ export WEBHOOK_SECRET=YOUR_WEBHOOK_SECRET
 Repo URL:
 export REPO_URL=YOUR_REPO_URL 
 
-e.g. export REPO_URL=funny-panda.devopsplayground.org/root/atlantis-demo
+e.g. export REPO_URL=<panda-name>.devopsplayground.org/root/atlantis-demo
 
 Hostname:
 export HOSTNAME=YOUR_HOSTNAME
 
-e.g. export HOSTNAME=http://funny-panda.devopsplayground.org
+e.g. export HOSTNAME=http://<panda-name>.devopsplayground.org
 ```
 
 ![Gitlab repo home](/image/6_gitlab.png)
@@ -119,11 +124,12 @@ Reaching this point indicates that you have successfully configured Atlantis to 
 In this section, we will be installing Atlantis from within the CLI using Docker. There should be a Dockerfile created already which will install the latest version of Atlantis.
 Commands below will build a image named atlantis with the Dockerfile supplied and run the atlantis service on port 4000:4141. The environment we been assigning is used here to configure atlantis on where to connect and give atlantis the access to our repo.
 
-3.1 To execute docker file swith to working directory -/home/playground/workdir .
+3.1 To execute docker file to swith to working directory -/home/playground/workdir/
 
 Then build a atlantis docker image using the below command.
 
 ```
+cd ~/workdir
 sudo docker build -t atlantis .
 ```
 ![Atlantis docker image build](/image/1_atlantis.png)
@@ -177,11 +183,15 @@ Everything should be fully set up and ready to output your terraform plan onto p
 4.1 First create a testing branch and try to upload a testing Terraform infrastructure and have Atlantis output  plan.
 You can get sample terraform infra files availble under test-atlantis folder.
 
+4.1.a Also for terraform provider token you can get it in VSCODE link under the file called terraform-token.txt
+
+![terraform provider token](/image/terraform_provider_token.png)
+
 ![Creating a new repo within Gitlab](/image/atlantis_testing_branch.png)
 
 ![Upload test files into testing_branch](/image/upload_files_testing_branch.png)
 
-4.1.a Once files uploaded then you can create merge request 
+4.1.b Once files uploaded then you can create merge request 
 
 ![Create merge request to testing atlantis](/image/6_atlantis.png)
 
@@ -241,8 +251,7 @@ atlantis plan -w dev
 
 ![Atlantis webpage output](/image/atlantis_webpage.png)
 
-Finally to destroy workspaces you can enable  workspace_auto_destroy future using in Terraform.
-Atlantis will automatically destroy the workspace associated with a pull request after it is closed or merged into the main branch. 
+
 
 Make sure that workspaces are properly cleaned up after the completion of pull requests, helping to maintain a clean and manageable infrastructure environment.
 
