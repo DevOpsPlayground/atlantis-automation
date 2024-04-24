@@ -59,6 +59,7 @@ Login Page of Gitlab
 and then follow the stpes how you have configured  access token like same way.
 
 
+
 ```
     - URL: http://ec2-atlantis-server-public-ip:4000/events 
     - Name: alantis-webhook (It is optional and can be anything you want)
@@ -71,7 +72,11 @@ and then follow the stpes how you have configured  access token like same way.
 ```
 
 ![Gitlab Webhook settings](/image/5_gitlab.png)
+
+2.2.3.a  For URL you can look at in atlantis-instance.txt
+
 ![Gitlab Webhook config part 1](/image/5_1_gitlab.png)
+
 ![Gitlab Webhook config part 2](/image/5_2_gitlab.png)
 
 You can see webhook logs here.
@@ -239,7 +244,7 @@ projects:
     enabled: false
 ```
 
-The above config defines 2 projects, atlantis-dev and atlantis-prod. This simulates the Dev environment and Prod environment.
+5.1 The above config defines 2 projects, atlantis-dev and atlantis-prod. This simulates the Dev environment and Prod environment.
 To tell Atlantis which workspace you want to use, you can use the -w flag during the atlantis plan or if you have defined a project within the atlantis.yaml, you can use the -p flag instead and it will pick up the configuration defined within the yaml file.
 
 ```
@@ -254,8 +259,31 @@ atlantis plan -w dev
 ![Atlantis webpage output](/image/atlantis_webpage.png)
 
 
+5.1.2 Make sure that workspaces are properly cleaned up after the completion of pull requests, helping to maintain a clean and manageable infrastructure environment.
 
-Make sure that workspaces are properly cleaned up after the completion of pull requests, helping to maintain a clean and manageable infrastructure environment.
+5.1.3 Using the -destroy Flag you can destroy your atlantis resources 
+
+Example
+To perform a destructive plan that will destroy resources you can use the -destroy flag like this:
+
+```
+atlantis plan -- -destroy
+atlantis plan -d dir -- -destroy
+```
+
+NOTE
+
+The -destroy flag generates a destroy plan, If this plan is applied it can result in data loss or service disruptions. Ensure that you have thoroughly reviewed your Terraform configuration and intend to remove the specified resources before using this flag.
+
+Atlantis destroy plan output from Gitlab page
+
+![atlantis plan destroy](/image/atlantis_destroy_1.png)
+
+![atlantis plan destory output](/image/atlantis_destroy_2.png)
+
+Destroy output from Atlantis web page view below.
+
+![Webpage destory output](/image/atlantis_destory_output_on_atlantis_web.png)
 
 Thank you
  
