@@ -3,7 +3,7 @@ In this lab, we'll use Terraform to deploy an EC2 instance preconfigured with At
 
 Follow the step-by-step below to complete this Lab, hope you enjoy and learn something new from this!
 
-# 2. Git Lab Time
+# 2. GitLab Process
 
 We have pre configured and provisioned EC2 instnce and Gitlab setup already to save time in playground session.
 So no need to perform Gitlab setup and based on playground links you can directly connect Gitlab and follow the Token integration and Webhook integration.
@@ -284,6 +284,20 @@ Atlantis destroy plan output from Gitlab page
 Destroy output from Atlantis web page view below.
 
 ![Webpage destory output](/image/atlantis_destory_output_on_atlantis_web.png)
+
+5.1.4 To delete all the resources use the below command.
+
+```
+atlantis apply -- -destroy
+```
+
+Resources deletion output view from Gitlab PR
+
+![atlantis resources deletion](/image/atlantis_destroy_output_gitlab.png)
+
+Resources deletion output view from Atlantis web page.
+
+![atlantis output view from webpage](/image/atlantis_destroy_output_webpage.png)
 
 Thank you
  
