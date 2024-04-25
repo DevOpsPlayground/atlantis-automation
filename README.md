@@ -53,7 +53,8 @@ Login Page of Gitlab
 2.2.1 Next we have to create and configure Webhook
 
 2.2.2 Before you create a webhook with atlantis IP you have to enable Network outbound requests.
-Note: This step required when you have only single EC2 server and installed both Atlantis and Gitlab ,then to communicate both of them actually required it but in our demo it has installed seperately.
+
+Note: This step required when you have only single EC2 server and installed both Atlantis and Gitlab ,then to communicate both of them actually required it but in our demo atlantis and Gitlab  has installed seperately so we can skip steps 2.2.2 and 2.2.3 .
 
 ![Network Outbound Requests](/image/Network_outbound_requests.png)
 ![Network outbound requests](/image/Network_outbound.png)
