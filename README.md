@@ -108,7 +108,7 @@ e.g. export ACCESS_TOKEN=glpat-abc123def456
 2.2.6 To check if you have assigned the value correctly, run 'echo $ACCESS_TOKEN'. This should return the token you just generated.
 
 2.2.7 Now set the environment variable for webhook secret as well.
-The secret will be defined by your own and make a note to export .
+The secret will be defined by your own and make a note of it to export all the four environment variables together to avoid confusion.
 
 ```
 export WEBHOOK_SECRET=YOUR_WEBHOOK_SECRET
@@ -148,14 +148,31 @@ sudo docker build -t atlantis .
 sudo docker run -itd -p 4000:4141 --name atlantis atlantis server --automerge --autoplan-modules --gitlab-user=root --gitlab-token=$ACCESS_TOKEN --repo-allowlist=$REPO_URL --gitlab-webhook-secret=$WEBHOOK_SECRET --gitlab-hostname=$HOSTNAME
 ```
 
+3.1.a Here I'm splitting the command to understand in better way.
+
+Run Atlantis Docker Container: sudo docker run -itd -p 4000:4141 --name atlantis atlantis server
+Runs the Atlantis Docker container in detached mode, exposing port 4000 locally and mapping it to port 4141 within the container, with the container named "atlantis".
+
+Automation Options: --automerge --autoplan-modules
+Enables automatic merging of pull requests and module-level autoplanning for Terraform changes.
+
+GitLab Configuration: --gitlab-user=root --gitlab-token=$ACCESS_TOKEN
+Specifies the GitLab user (root in this case) and provides the GitLab access token for authentication.
+
+Repository Allowlist: --repo-allowlist=$REPO_URL
+Specifies the repository URL(s) that Atlantis should allow operations on.
+
+Webhook Configuration: --gitlab-webhook-secret=$WEBHOOK_SECRET --gitlab-hostname=$HOSTNAME
+Provides the GitLab webhook secret for secure communication and sets the GitLab hostname for webhook handling.
+
 ![Running Atlantis with built image above](/image/2_atlantis.png)
 
 
-3.1.2 Once Atlantis service is started, you can access it by going to your EC2 IP on port 4000
+3.1.2 Once Atlantis service is started, you can access it by going to your atlantis ip on port 4000
 
 ![Atlantis homepage](/image/3_atlantis.png)
 
-Next we need to provide Atlantis  access to AWS by providing the AWS User Access key and Secret Access Key.  IAM user is provided with minimum required permissions for Atlantis to work here.
+Next we need to provide Atlantis  access to AWS by providing the AWS User Access key and Secret Access Key.  IAM user is provided with minimum required permissions for Atlantis to work here.This step required when you are using any provider related resources but in our demo we are using some fake provider resources so we can skip these steps from 3.1.3 to 3.1.7.
 
 3.1.3 To get AWS accesskey and secret key values grep it with the below command in Atlantis server
 
@@ -192,8 +209,8 @@ aws_secret_access_key = "SECRET_ACCESS_KEY"
 Everything should be fully set up and ready to output your terraform plan onto pull request for everyone who has access to your repo to see. 
 
 
-4.1 First create a testing branch and try to upload a testing Terraform infrastructure and have Atlantis output  plan.
-You can get sample terraform infra files availble under test-atlantis folder.
+4.1 First create a testing branch and try to copy main.tf and terraform.tfvars content for testing Terraform infrastructure and have Atlantis output  plan.
+You can get these sample terraform main.tf and terraform.tfvars infra files availble under test-atlantis folder.
 
 4.1.a Also for terraform provider token you can get it in VSCODE link under the file called terraform-token.txt
 
@@ -224,7 +241,8 @@ Once the plan is done and without error, the output will be commented within the
 Atlantis doesn't just support linear workspaces but you can configure within the atlantis.yaml file to accept multiple workspaces
 
 Within the atlantis.yaml file will look something like this. 
-You can get this atlantis.yaml file from  our atlantis-automation Github repository.
+
+Create atlantis.yaml file in your testing branch and copy the content from atlantis-automation Github repository for qucik and easy testing.
 
 ```
 version: 3
@@ -269,10 +287,15 @@ atlantis plan -w dev
 5.1.3 Using the -destroy Flag you can destroy your atlantis resources 
 
 Example
-To perform a destructive plan that will destroy resources you can use the -destroy flag like this:
+5.1.3a To perform a destructive plan that will destroy resources you can use the -destroy flag like this:
 
 ```
 atlantis plan -- -destroy
+
+```
+5.1.3b To perform a destructive plan at directory level use the below command.
+
+```
 atlantis plan -d dir -- -destroy
 ```
 
