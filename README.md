@@ -14,6 +14,12 @@ So no need to perform Gitlab setup and based on playground links you can directl
 
 Lab environment: https://lab.devopsplayground.org/
 
+Example:
+
+GITLAB: http://<panda-name>.devopsplayground.org
+TERMINAL: http://<panda-name>.devopsplayground.org:3000/wetty
+VSCODE: http://<panda-name>.devopsplayground.org:8000/
+Atlantis: http://<IP Address>/wetty
 
 2.1.1 Log into your GitLab instance with provided login details.
 You will find user and password details in VSCODE link under the file called gitlab_cred.txt.
@@ -56,8 +62,7 @@ Login Page of Gitlab
 
 2.2.3 Click save changes and go to project  settings Webhook option.
 
-and then follow the stpes how you have configured  access token like same way.
-
+and then follow the below  stpes to configure  webhook setup and webhook secret.
 
 
 ```
@@ -83,7 +88,7 @@ You can see webhook logs here.
 
 ![Webhook playload event logs](/image/Webhook_logs.png)
 
-2.2.4 Set repo URL and hostname environment variables and make sure that REPO URL DOES NOT contain http.
+2.2.4 Set up repo URL and hostname environment variables and make sure that REPO URL DOES NOT contain http.
 
 At the same time  make sure hostname should contain http.
 
@@ -291,11 +296,11 @@ Destroy output from Atlantis web page view below.
 atlantis apply -- -destroy
 ```
 
-Resources deletion output view from Gitlab PR
+5.1.5 Resources deletion output view from Gitlab PR
 
 ![atlantis resources deletion](/image/atlantis_destroy_output_gitlab.png)
 
-Resources deletion output view from Atlantis web page.
+5.1.6 Resources deletion output view from Atlantis web page.
 
 ![atlantis output view from webpage](/image/atlantis_destroy_output_webpage.png)
 
