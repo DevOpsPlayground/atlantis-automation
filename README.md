@@ -16,13 +16,7 @@ Lab environment: https://lab.devopsplayground.org/
 
 Example:
 
-GITLAB: http://<panda-name>.devopsplayground.org
-
-TERMINAL: http://<panda-name>.devopsplayground.org:3000/wetty
-
-VSCODE: http://<panda-name>.devopsplayground.org:8000/
-
-Atlantis: http://<IP Address>/wetty
+![DevOps Play Ground Links](/image/Devops_playground_links.png)
 
 2.1.1 Log into your GitLab instance with provided login details.
 You will find user and password details in VSCODE link under the file called gitlab_cred.txt.
